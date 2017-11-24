@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Engineering on The Nexus</title>
+    <link>http://the-nexus.co.uk/categories/engineering/</link>
+    <description>Recent content in Engineering on The Nexus</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 12 Jul 2017 14:46:39 +0000</lastBuildDate>
+    
+	<atom:link href="http://the-nexus.co.uk/categories/engineering/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Logs, Metrics and Events</title>
+      <link>http://the-nexus.co.uk/post/logseventsmetrics/</link>
+      <pubDate>Wed, 12 Jul 2017 14:46:39 +0000</pubDate>
+      
+      <guid>http://the-nexus.co.uk/post/logseventsmetrics/</guid>
+      <description>Logging is an area of engineering that isn&amp;rsquo;t really discussed enough.
+At some point early during our careers, someone shows us how to debug stuff with print statements, console.log or one of the other variations and we are set. At a later point, someone shows us centralized logging with all our logs going to ELK or Splunk, and now we&amp;rsquo;re able to do the same sort of thing with loads of servers at once.</description>
+    </item>
+    
+    <item>
+      <title>Plan for Change</title>
+      <link>http://the-nexus.co.uk/post/planforchange/</link>
+      <pubDate>Tue, 07 Jun 2016 14:46:39 +0000</pubDate>
+      
+      <guid>http://the-nexus.co.uk/post/planforchange/</guid>
+      <description>Change Software can change a lot over its lifetime because technology is moving faster, and I believe that software is living longer when operated as services. Change, driven by evolution and revolution in competitive technologies, huge changes in platforms, business models and shifts in customer expectations require us to be agile.
+I don’t mean that we have to adopt Scrum, but that we need to fundamentally consider software development with an agile viewpoint that accepts change as inevitable — you will be disrupted every 5 years or so, and you’d better be able to adapt.</description>
+    </item>
+    
+  </channel>
+</rss>

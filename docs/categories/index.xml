@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on The Nexus</title>
+    <link>http://the-nexus.co.uk/categories/</link>
+    <description>Recent content in Categories on The Nexus</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="http://the-nexus.co.uk/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Engineering</title>
+      <link>http://the-nexus.co.uk/categories/engineering/</link>
+      <pubDate>Wed, 12 Jul 2017 14:46:39 +0000</pubDate>
+      
+      <guid>http://the-nexus.co.uk/categories/engineering/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Maintenance</title>
+      <link>http://the-nexus.co.uk/categories/maintenance/</link>
+      <pubDate>Tue, 07 Jun 2016 14:46:39 +0000</pubDate>
+      
+      <guid>http://the-nexus.co.uk/categories/maintenance/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Services</title>
+      <link>http://the-nexus.co.uk/categories/services/</link>
+      <pubDate>Tue, 07 Jun 2016 14:46:39 +0000</pubDate>
+      
+      <guid>http://the-nexus.co.uk/categories/services/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,8 @@
+baseurl = "http://the-nexus.co.uk"
+languageCode = "en-us"
+title = "The Nexus"
+publishDir = "docs"
+
+[Author]
+  name = "Daniel Speed"
+  github = "Redundancy"

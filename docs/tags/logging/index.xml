@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Logging on The Nexus</title>
+    <link>http://the-nexus.co.uk/tags/logging/</link>
+    <description>Recent content in Logging on The Nexus</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 12 Jul 2017 14:46:39 +0000</lastBuildDate>
+    
+	<atom:link href="http://the-nexus.co.uk/tags/logging/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Logs, Metrics and Events</title>
+      <link>http://the-nexus.co.uk/post/logseventsmetrics/</link>
+      <pubDate>Wed, 12 Jul 2017 14:46:39 +0000</pubDate>
+      
+      <guid>http://the-nexus.co.uk/post/logseventsmetrics/</guid>
+      <description>Logging is an area of engineering that isn&amp;rsquo;t really discussed enough.
+At some point early during our careers, someone shows us how to debug stuff with print statements, console.log or one of the other variations and we are set. At a later point, someone shows us centralized logging with all our logs going to ELK or Splunk, and now we&amp;rsquo;re able to do the same sort of thing with loads of servers at once.</description>
+    </item>
+    
+  </channel>
+</rss>

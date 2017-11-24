@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Logs, Metrics and Events</title>
+
+  <meta name="author" content="Daniel Speed" />
+  
+  
+  <meta name="description" content="Don&#39;t just deal with logs">
+  
+
+  <meta name="generator" content="Hugo 0.30.2" />
+
+  <link rel="alternate" href="http://the-nexus.co.uk/index.xml" type="application/rss+xml" title="The Nexus">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="http://the-nexus.co.ukcss/bootstrap.min.css" />
+  <link rel="stylesheet" href="http://the-nexus.co.ukcss/main.css" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="http://the-nexus.co.ukcss/pygment_highlights.css" />
+  
+  
+  <meta property="og:title" content="Logs, Metrics and Events" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/post/logseventsmetrics//" />
+  <meta property="og:image" content="" />
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://the-nexus.co.uk">The Nexus</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+      </ul>
+    </div>
+
+	<div class="avatar-container">
+	  <div class="avatar-img-border">
+      
+	  </div>
+	</div>
+
+  </div>
+</nav>
+
+
+    <div role="main" class="container main-content">
+
+      
+        
+
+
+
+
+
+<header class="header-section ">
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Logs, Metrics and Events</h1>
+      
+      
+      
+      <span class="post-meta">Posted on July 12, 2017</span>
+      
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+          
+
+<p>Logging is an area of engineering that isn&rsquo;t really discussed enough.</p>
+
+<p>At some point early during our careers, someone shows us how to debug
+stuff with print statements, console.log or one of the other variations and we are
+set. At a later point, someone shows us centralized logging with all our logs going
+to ELK or Splunk, and now we&rsquo;re able to do the same sort of thing with loads of
+servers at once.</p>
+
+<p>Our power is now defined by cost - how expensive it is to log something, how much
+we log, how much we can throw at processing or searching them, how much we can afford to store.
+All our problems have solutions, as long as you have enough power and a regex.</p>
+
+<h2 id="the-problem-with-logs">The problem with logs</h2>
+
+<p>Once people get in the habit of using regexes to extract information from our logs
+we will usually start to see a problem follow soon after - there&rsquo;s no guarantees with
+logs. As engineers, our logs are just whatever we think is useful to see what happened at a later point.
+We make no guarantees about them staying the same.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">log<span style="color:#f92672">.</span>info(<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;Sending email failed&#34;</span>)</code></pre></div>
+
+<p>The line above is a perfectly reasonable line of log, at least as far as it goes.</p>
+
+<p>You can almost imagine someone creating an alert that will trigger if it fails to send emails more than
+a few times based off this log message, probably with an expectation that the email server might be down.
+However, while working on a bug, the developer realizes that they&rsquo;re not checking for errors from the send function.
+The obvious thing is to add that to the log, so that they can see a bit more about what went wrong, perhaps
+because at one time they had an issue where the email server was up but it was failing to send.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">log<span style="color:#f92672">.</span>info(<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;Sending email returned error code&#34;</span>, err_code)</code></pre></div>
+
+<p>However, if we were looking for &ldquo;Sending email failed&rdquo;, we&rsquo;ll no longer get it, but there&rsquo;s nothing in the code
+that indicates that there was something important that depended on it.</p>
+
+<p>If we get a bit too enthusiastic with our logging, we might end up in the position where this logging
+could have a performance impact, and perhaps we increase the log level to only send on warning logs.
+Unfortunately, because we decided to make our log an info level log, we no longer get it,
+and won&rsquo;t get any associated alerts either.</p>
+
+<h2 id="events">Events</h2>
+
+<p>Here&rsquo;s a silly rule - if there&rsquo;s another system that consumes it or depends on it,
+it&rsquo;s a message or an event, regardless of where it goes to.</p>
+
+<p>Messages and Events are like API or RPC calls, the parameters matter, they should
+be well defined in what they mean or do and they are functionality, not a debugging
+tool. Sending events should not look like logging, they should look like function calls.
+The removal or change of an event is understood to have potential effects on other systems.</p>
+
+<p>Events don&rsquo;t have a level like logs do - since functionality may depend on them,
+they MUST get through to the consumers at some SLA, and you may have to guarantee that
+they are received.</p>
+
+<p>This also suggests that events shouldn&rsquo;t go through the logging system, since we
+can&rsquo;t always guarantee the same SLA for all logs.</p>
+
+<h3 id="errors-exceptions">Errors / Exceptions</h3>
+
+<p>Errors should be treated like events, and routed to a system that can provide more
+insight into them than is easily available in logs.</p>
+
+<p>While things like Python exception tracebacks are nice, they are nothing like as
+useful as something like Sentry, reporting exceptions, callstacks, local variables,
+categorizing them and counting them.</p>
+
+<p>Logs are easily ignored, but can become clogged with errors that are expected,
+creating a level of noise that obscured new issues being raised and slowing debugging.
+Many products that I&rsquo;ve looked at over the years have built up a steady state of noise,
+and it almost always results in tense sessions where you have to see if the volume of errors
+looks like it did a week or a month ago, or if it&rsquo;s an indication of a change.</p>
+
+<p>Don&rsquo;t use exceptions, or their equivalent as a way of reporting things like bad user input,
+REST responses or other external failures.</p>
+
+<h2 id="metrics">Metrics</h2>
+
+<p>Metrics are something else that I often see mixed in with, or derived from logs.</p>
+
+<p>Metrics deserve to be treated seperately, because they are exceedingly useful for
+tracking the behaviour of your application and alerting, and as such are a form
+of contract to your monitoring. Metrics are also significantly cheaper to handle
+than extracting information from logs after the fact too.</p>
+
+<p>Like Events, metrics are something you don&rsquo;t want to get turned off just because
+you disabled some logging. Measure your response times by your endpoint, count
+your response codes, your db query times and your cache hit rates and do it always.</p>
+
+<h2 id="general-advice">General Advice</h2>
+
+<h3 id="stdout-and-stderr">Stdout and Stderr</h3>
+
+<p>Stdout is for output - as in program output that&rsquo;s input to something else.
+Stderr is for information (not just errors)</p>
+
+<p>Python will get this right by default - logging.StreamHandler will output to
+stderr as will the standard logger in Go.</p>
+
+<p>The standard comes from dealing with CLI applications and others that pipe output
+to each other.</p>
+
+<h3 id="logs-and-partitions">Logs and partitions</h3>
+
+<p>Rotating logs is a great practice to prevent machines from filling up, but it&rsquo;s
+worth considering further:</p>
+
+<ul>
+<li>How bad is it if I lose logs?</li>
+<li>Am I at risk of filling the disks if I lose connection?</li>
+<li>Can certain failure cases cause me to fill my logs far faster than usually?</li>
+<li>If I do fill the disk with logs, can I cause failures in more critical functionality?</li>
+</ul>
+
+<p>While it might sound paranoid, it&rsquo;s not entirely unreasonable to ensure that if you are
+logging to disk, you create a limited size partition especially for it. This practice
+can prevent an issue with your logs from preventing you from staging new versions
+of your application, or otherwise affecting how your application functions.</p>
+
+<h3 id="readable-or-structured-logs">Readable or Structured logs?</h3>
+
+<p>Structured logging involves outputting logs in a format that has structure -
+frequently JSON, allowing you to preserve multiple fields of information together
+without the need to extract them.</p>
+
+<p>Tools like ELK and Splunk can really come into their own with well structured data,
+especially where you standardize field names. This can really help you collect all
+logs for a user action, even when they happen asynchronously across many machines.</p>
+
+<p>Structured logging feels like the price of entry of any sufficiently complex,
+async and distributed application where time ordering may interleave different contexts.</p>
+
+<p>Beware when you use structured logs where you should be using events.</p>
+
+<h3 id="bi">BI</h3>
+
+<p>Business intelligence (BI) is one of the more common ways to come across events.
+You&rsquo;re often reporting something that happened, or that a user did, in a way that
+has a significant value to the business.</p>
+
+<p>There are all sorts of things that you might need to consider that might differ:</p>
+
+<ul>
+<li>Long term compatibility</li>
+<li>Loss of events</li>
+</ul>
+
+<p>Generating events that are easy to transform and correlate is possibly your largest concern,
+and be very aware that you rarely go back and compensate for missing information.
+Secondly, you need to consider that events from launch may still be relevant years into your
+product life-cycle, and design accordingly in how you evolve.</p>
+
+<h3 id="12-factor">12 Factor</h3>
+
+<p><a href="https://12factor.net/logs">https://12factor.net/logs</a></p>
+
+<p>You may notice that a lot of what I&rsquo;m saying is at odds with a 12 factor app setup -
+you&rsquo;re going to have to make your own mind up about it, but I&rsquo;m fairly convinced
+that the simple reading of 12 factor logging ends up being bad practice.</p>
+
+<p>Firstly, 12FA treats says you should send everything to stdout, breaking with
+existing standards.</p>
+
+<p>By putting everything into a single stream, you create problems for yourself in
+extracting and enforcing different SLAs and create a need for something
+like Fluentd.</p>
+
+<p>For my money, save yourself the work of rebuilding information that you already had,
+and the time and cost of dealing with frequently performance-hungry bandaids.</p>
+
+<p><em>Do</em> decouple yourself from the consumers.</p>
+
+      </article>
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="http://the-nexus.co.uk/post/planforchange/" data-toggle="tooltip" data-placement="top" title="Plan for Change">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+
+    </div>
+  </div>
+</div>
+
+      
+
+    </div>
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+          
+          <li>
+            <a href="https://github.com/Redundancy" title="GitHub">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+		      
+		      
+	    	  
+          
+          
+
+    		  <li>
+      			<a href="http://the-nexus.co.ukindex.xml" title="RSS">
+      			  <span class="fa-stack fa-lg">
+        				<i class="fa fa-circle fa-stack-2x"></i>
+        				<i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      			  </span>
+      			</a>
+    		  </li>		
+
+        </ul>
+        <p class="copyright text-muted">
+    		  Daniel Speed
+    		  &nbsp;&bull;&nbsp;
+    		  2017
+    		  
+    		  
+    		  &nbsp;&bull;&nbsp;
+    		  <a href="http://the-nexus.co.uk">The Nexus</a>
+    		  
+  	    </p>
+  	        
+    		<p class="theme-by text-muted">
+    		  Theme by
+    		  <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    		</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="http://the-nexus.co.ukjs/jquery-1.11.2.min.js"></script>
+<script src="http://the-nexus.co.ukjs/bootstrap.min.js"></script>
+<script src="http://the-nexus.co.ukjs/main.js"></script>
+
+
+
+  </body>
+</html>

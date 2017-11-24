@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>AWS Shared Account Automation</title>
+
+  <meta name="author" content="Daniel Speed" />
+  
+  
+  <meta name="description" content="Versioning game data in the VCS effectively, even for large amounts of data">
+  
+
+  <meta name="generator" content="Hugo 0.30.2" />
+
+  <link rel="alternate" href="http://the-nexus.co.uk/index.xml" type="application/rss+xml" title="The Nexus">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="http://the-nexus.co.ukcss/bootstrap.min.css" />
+  <link rel="stylesheet" href="http://the-nexus.co.ukcss/main.css" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="http://the-nexus.co.ukcss/pygment_highlights.css" />
+  
+  
+  <meta property="og:title" content="AWS Shared Account Automation" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/post/awssharedaccounts//" />
+  <meta property="og:image" content="" />
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://the-nexus.co.uk">The Nexus</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+      </ul>
+    </div>
+
+	<div class="avatar-container">
+	  <div class="avatar-img-border">
+      
+	  </div>
+	</div>
+
+  </div>
+</nav>
+
+
+    <div role="main" class="container main-content">
+
+      
+        
+
+
+
+
+
+<header class="header-section ">
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>AWS Shared Account Automation</h1>
+      
+      
+      
+      <span class="post-meta">Posted on February 6, 2016</span>
+      
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+          
+
+<h2 id="the-multi-account-organization">The Multi-Account Organization</h2>
+
+<p>There are a lot of properties of having multiple AWS accounts in an organization to recommend it as a practice:
+Separate invoices for different teams</p>
+
+<p>In some organizations cost allocation is a thing, and being able to get different invoices for different product groups is good. You can achieve some of this using Tags, but various services have some costs that aren’t easily separated.
+Security</p>
+
+<p>It can be difficult to avoid giving developers IAM access, since there are an ever increasing number of services and uses for it with assumed roles for EC2 and AWS Lambda.</p>
+
+<p>It can be quite difficult to regulate so that users with some IAM access can use these things but not elevate their own permissions, and can make it more difficult for developers to contribute to having well-locked down roles.</p>
+
+<h2 id="partitioning">Partitioning</h2>
+
+<p>With per-team accounts, you don’t have to worry nearly as much about one team messing with something critical to another by accident. In an organization with teams of varying experience and services of different levels of critical , this</p>
+
+<h3 id="automation-across-accounts">Automation Across Accounts</h3>
+
+<p>Once you have a load of accounts, getting an overview becomes a challenge for your administrators. Luckily, using trust relationships between accounts mean that you don’t need to create accounts for your administrators on every account you have.</p>
+
+<p>To make your security team happier, I absolutely recommend the advice that you require MFA for any cross-account login.
+So now you have a set of administrators on a root account (possibly your consolidated billing account), logging into other accounts easily.</p>
+
+<h3 id="automation-is-everything">Automation is everything</h3>
+
+<p>Automation of as much as possible is key to using AWS effectively, but we’ve created a problem — our administrators have API credentials and now need to programatically use MFA, and account swapping to do things on other accounts, like maintaining shared roles, checking and updating SSL certificates etc. Using MFA and STS together is not obvious!</p>
+
+<p>It’s also just worth noting that the AWS CLI is not well set up for this usage, and some tools are not well exposed in the console at the moment. As an alternative, it is possible to create service users for specific tasks on each account, but the overhead of that method grows quickly.</p>
+
+<h3 id="the-flow">The Flow</h3>
+
+<p>Here’s the sequence of things that need to happen:</p>
+
+<ol>
+<li>With the administrator’s access key and secret access key, you need to create an STS Session Token, giving the MFA id and a token value from the device. This will return a new key, secret key and session token.</li>
+<li>Using the new details, you now need to call STS AssumeRole for the required role on each account. You do not give your MFA / token codes this time. This will return a new key, secret key and session token for each account.</li>
+<li>You now use these last keys, secret keys and tokens as your authorization on the accounts.
+It’s important that you create a session token in step one, as the MFA code is fairly time-limited and will expire, but it can also only be used once. If you´re iterating over multiple accounts, you really should get the token first.</li>
+</ol>
+
+<h3 id="in-code">In Code</h3>
+
+<p>I’ve chosen to illustrate this in Golang, but it should be relatively understandable and simple to translate to whatever language you like due to the similarities of the AWS libraries.</p>
+
+<pre><code class="language-go">stsSvc := sts.New(session.New())
+
+// assuming a virtual MFA device
+serial := fmt.Sprintf(“arn:aws:iam::%v:mfa/%v”, rootAccount, user)
+t := &amp;sts.GetSessionTokenInput{
+    DurationSeconds: aws.Int64(900),
+    SerialNumber: aws.String(serial),
+    TokenCode: aws.String(mfa),
+}
+
+token, err := stsSvc.GetSessionToken(t)
+if err != nil {
+    fmt.Println(“Could not get session token using MFA:”, err)
+    os.Exit(1)
+}
+
+roleSwapConfig := aws.NewConfig().WithCredentials(
+    credentials.NewStaticCredentials(
+        *token.Credentials.AccessKeyId,
+        *token.Credentials.SecretAccessKey,
+        *token.Credentials.SessionToken,
+    ),
+)
+
+roleSwapSession := session.New(roleSwapConfig)
+
+// Now we have a session config that uses a session token generated
+// with our MFA code, we can use that repeatedly to assume a
+// role that requires MFA:
+roleArn := fmt.Sprintf(“arn:aws:iam::%v:role/%v”, account, adminrole)
+fmt.Println(“Assuming role on account”, account)
+
+svc := sts.New(roleSwapSession)
+uniqueSessionName := fmt.Sprintf(“%d”, time.Now().UTC().UnixNano())
+
+params := &amp;sts.AssumeRoleInput{
+    RoleArn: aws.String(roleArn),
+    RoleSessionName: aws.String(uniqueSessionName),
+}
+
+assumeRoleResult, assumeRoleErr := svc.AssumeRole(params)
+if assumeRoleErr != nil {
+    fmt.Println(“Unable to assume role”, assumeRoleErr)
+    return
+}
+</code></pre>
+
+<h2 id="uses">Uses</h2>
+
+<p>Using MFA means that the duration of access is limited — it’s not great for service accounts that are automatically scanning for things continuously and long-term (making a limited read-only shared role, disabling the MFA requirement and rotating keys regularly seems better), but it’s great for any command line tools, especially if they can use a non-MFA read-only role and then elevate themselves to another role that requires MFA for making changes.</p>
+
+<p>In particular, since operations and security departments may not want developers handling and managing SSL certificates themselves, tools for managing certificates across multiple accounts could be highly useful.</p>
+
+<p>Another great use is as a way of pushing out consistent roles for shared non-administrator access across a number of accounts.</p>
+
+      </article>
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="http://the-nexus.co.uk/post/whatissenior/" data-toggle="tooltip" data-placement="top" title="">&larr; Previous Post</a>
+        </li>
+        
+        
+        <li class="next">
+          <a href="http://the-nexus.co.uk/post/filestaticdata/" data-toggle="tooltip" data-placement="top" title="File Static Data">Next Post &rarr;</a>
+        </li>
+        
+      </ul>
+
+      
+
+    </div>
+  </div>
+</div>
+
+      
+
+    </div>
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+          
+          <li>
+            <a href="https://github.com/Redundancy" title="GitHub">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+		      
+		      
+	    	  
+          
+          
+
+    		  <li>
+      			<a href="http://the-nexus.co.ukindex.xml" title="RSS">
+      			  <span class="fa-stack fa-lg">
+        				<i class="fa fa-circle fa-stack-2x"></i>
+        				<i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      			  </span>
+      			</a>
+    		  </li>		
+
+        </ul>
+        <p class="copyright text-muted">
+    		  Daniel Speed
+    		  &nbsp;&bull;&nbsp;
+    		  2017
+    		  
+    		  
+    		  &nbsp;&bull;&nbsp;
+    		  <a href="http://the-nexus.co.uk">The Nexus</a>
+    		  
+  	    </p>
+  	        
+    		<p class="theme-by text-muted">
+    		  Theme by
+    		  <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    		</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="http://the-nexus.co.ukjs/jquery-1.11.2.min.js"></script>
+<script src="http://the-nexus.co.ukjs/bootstrap.min.js"></script>
+<script src="http://the-nexus.co.ukjs/main.js"></script>
+
+
+
+  </body>
+</html>

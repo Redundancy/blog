@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Standardized Python installs</title>
+
+  <meta name="author" content="Daniel Speed" />
+  
+  
+  <meta name="description" content="Using immutable Python installs, for great justice.">
+  
+
+  <meta name="generator" content="Hugo 0.30.2" />
+
+  <link rel="alternate" href="http://the-nexus.co.uk/index.xml" type="application/rss+xml" title="The Nexus">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="http://the-nexus.co.ukcss/bootstrap.min.css" />
+  <link rel="stylesheet" href="http://the-nexus.co.ukcss/main.css" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="http://the-nexus.co.ukcss/pygment_highlights.css" />
+  
+  
+  <meta property="og:title" content="Standardized Python installs" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/post/standardizedpython//" />
+  <meta property="og:image" content="" />
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://the-nexus.co.uk">The Nexus</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+      </ul>
+    </div>
+
+	<div class="avatar-container">
+	  <div class="avatar-img-border">
+      
+	  </div>
+	</div>
+
+  </div>
+</nav>
+
+
+    <div role="main" class="container main-content">
+
+      
+        
+
+
+
+
+
+<header class="header-section ">
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>Standardized Python installs</h1>
+      
+      
+      
+      <span class="post-meta">Posted on April 23, 2016</span>
+      
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+          
+
+<h1 id="standardized-python-installs">Standardized Python installs</h1>
+
+<p>Virtualenv for Python is wonderful, and you should use it.</p>
+
+<p>Our path to using it however, was rather rocky: working primarily on Windows, we were for quite some time victims of the Python community’s focus on Pip (and insistence on compiling everything during install).</p>
+
+<p>Working on Windows, with a large number of non-technical users, the idea of trying to get your tools to compile on an artists’ machine should really scare you (never-mind the lack of testing / support and particular versions of visual studio that had to exist).</p>
+
+<p>Our challenges were multiplied by the number of versions of Python that existed: Maya (a 3D tool) used a very old version of Python, and then threw the further wrench of using 64 bit versions. Our game engine used Python, but a custom version with updated compilers. Other tools had other requirements for various reasons, and we needed tests across the whole spectrum.</p>
+
+<p>Initially, versions of Python was just put into source control, in what was called “shared tools”. These versions of Python were, to some extent, curated with updated packages and could be found on every machine, and they could be located relatively easily by batch scripts to get the right version of Python.</p>
+
+<p>Of course, over time, these installations were added to with many packages, and used by tens of tools (most of which only a few people knew about). Updating our Python packages became a nightmare involving checking in a change and crossing your fingers that someone would notice and fix any dependency issues.</p>
+
+<p>We realized the same thing as other Python users: you should manage and isolate your dependencies and environment per project, so that upgrades can be managed, tested and done individually with confidence about the scope of the change.</p>
+
+<p>Just like picking up libraries randomly caused us significant issues, so did the pattern of just relying on python.exe being the correct version for our needs. It so often turned out that it wasn’t, and it caused us a lot of issues where we needed things to work on many different machines quickly and easily. CI machines could be especially problematic when they needed all the versions installed.</p>
+
+<p>Our solution was to wrap the Windows Python installers, providing additional environment variables that were set for all users that would allow authors of tools to specify specific versions of Python. As an example %PYTHON_2_7_3_x86% would allow you to start with a specific python version.</p>
+
+<blockquote>
+<p>Explicit is better than implicit. — The Zen of Python</p>
+</blockquote>
+
+<p>These base versions of Python were locked down so that no more could be installed into them, preventing people from installing and polluting them (therefore creating another shared environment) rather than using your own environment. This was an effort in trying to make it hard to follow the old anti-patterns.</p>
+
+<p>Of course, you still need easy_install for the moment. Although the Python world has caught up on the utility of pre-compiled modules and created wheels as a standard means to support it, wheel support isn’t ubiquitous, and Windows is still somewhat overlooked as a platform for Python.</p>
+
+<p>Far from trying to compete with virtualenv or providing something non-standard, we adopted it as much as we could, and simply provided some extra structure and convention to ensuring that you could get exactly the environment you wanted.</p>
+
+      </article>
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="http://the-nexus.co.uk/post/filestaticdata/" data-toggle="tooltip" data-placement="top" title="File Static Data">&larr; Previous Post</a>
+        </li>
+        
+        
+        <li class="next">
+          <a href="http://the-nexus.co.uk/post/planforchange/" data-toggle="tooltip" data-placement="top" title="Plan for Change">Next Post &rarr;</a>
+        </li>
+        
+      </ul>
+
+      
+
+    </div>
+  </div>
+</div>
+
+      
+
+    </div>
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+          
+          <li>
+            <a href="https://github.com/Redundancy" title="GitHub">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+		      
+		      
+	    	  
+          
+          
+
+    		  <li>
+      			<a href="http://the-nexus.co.ukindex.xml" title="RSS">
+      			  <span class="fa-stack fa-lg">
+        				<i class="fa fa-circle fa-stack-2x"></i>
+        				<i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      			  </span>
+      			</a>
+    		  </li>		
+
+        </ul>
+        <p class="copyright text-muted">
+    		  Daniel Speed
+    		  &nbsp;&bull;&nbsp;
+    		  2017
+    		  
+    		  
+    		  &nbsp;&bull;&nbsp;
+    		  <a href="http://the-nexus.co.uk">The Nexus</a>
+    		  
+  	    </p>
+  	        
+    		<p class="theme-by text-muted">
+    		  Theme by
+    		  <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    		</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="http://the-nexus.co.ukjs/jquery-1.11.2.min.js"></script>
+<script src="http://the-nexus.co.ukjs/bootstrap.min.js"></script>
+<script src="http://the-nexus.co.ukjs/main.js"></script>
+
+
+
+  </body>
+</html>
