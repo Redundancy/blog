@@ -144,54 +144,52 @@ It’s important that you create a session token in step one, as the MFA code is
 
 <h3 id="in-code">In Code</h3>
 
-<p>I’ve chosen to illustrate this in Golang, but it should be relatively understandable and simple to translate to whatever language you like due to the similarities of the AWS libraries.</p>
+<p>I’ve chosen to illustrate this in Golang, but it should be relatively understandable and simple to translate to whatever language you like due to the similarities of the AWS libraries.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">stsSvc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sts</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">New</span>())
 
-<pre><code class="language-go">stsSvc := sts.New(session.New())
-
-// assuming a virtual MFA device
-serial := fmt.Sprintf(“arn:aws:iam::%v:mfa/%v”, rootAccount, user)
-t := &amp;sts.GetSessionTokenInput{
-    DurationSeconds: aws.Int64(900),
-    SerialNumber: aws.String(serial),
-    TokenCode: aws.String(mfa),
+<span style="color:#75715e">// assuming a virtual MFA device
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">serial</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#960050;background-color:#1e0010">“</span><span style="color:#a6e22e">arn</span>:<span style="color:#a6e22e">aws</span>:<span style="color:#a6e22e">iam</span>::<span style="color:#f92672">%</span><span style="color:#a6e22e">v</span>:<span style="color:#a6e22e">mfa</span><span style="color:#f92672">/%</span><span style="color:#a6e22e">v</span><span style="color:#960050;background-color:#1e0010">”</span>, <span style="color:#a6e22e">rootAccount</span>, <span style="color:#a6e22e">user</span>)
+<span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">sts</span>.<span style="color:#a6e22e">GetSessionTokenInput</span>{
+    <span style="color:#a6e22e">DurationSeconds</span>: <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">Int64</span>(<span style="color:#ae81ff">900</span>),
+    <span style="color:#a6e22e">SerialNumber</span>: <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">serial</span>),
+    <span style="color:#a6e22e">TokenCode</span>: <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">mfa</span>),
 }
 
-token, err := stsSvc.GetSessionToken(t)
-if err != nil {
-    fmt.Println(“Could not get session token using MFA:”, err)
-    os.Exit(1)
+<span style="color:#a6e22e">token</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">stsSvc</span>.<span style="color:#a6e22e">GetSessionToken</span>(<span style="color:#a6e22e">t</span>)
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#960050;background-color:#1e0010">“</span><span style="color:#a6e22e">Could</span> <span style="color:#a6e22e">not</span> <span style="color:#a6e22e">get</span> <span style="color:#a6e22e">session</span> <span style="color:#a6e22e">token</span> <span style="color:#a6e22e">using</span> <span style="color:#a6e22e">MFA</span>:<span style="color:#960050;background-color:#1e0010">”</span>, <span style="color:#a6e22e">err</span>)
+    <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Exit</span>(<span style="color:#ae81ff">1</span>)
 }
 
-roleSwapConfig := aws.NewConfig().WithCredentials(
-    credentials.NewStaticCredentials(
-        *token.Credentials.AccessKeyId,
-        *token.Credentials.SecretAccessKey,
-        *token.Credentials.SessionToken,
+<span style="color:#a6e22e">roleSwapConfig</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">NewConfig</span>().<span style="color:#a6e22e">WithCredentials</span>(
+    <span style="color:#a6e22e">credentials</span>.<span style="color:#a6e22e">NewStaticCredentials</span>(
+        <span style="color:#f92672">*</span><span style="color:#a6e22e">token</span>.<span style="color:#a6e22e">Credentials</span>.<span style="color:#a6e22e">AccessKeyId</span>,
+        <span style="color:#f92672">*</span><span style="color:#a6e22e">token</span>.<span style="color:#a6e22e">Credentials</span>.<span style="color:#a6e22e">SecretAccessKey</span>,
+        <span style="color:#f92672">*</span><span style="color:#a6e22e">token</span>.<span style="color:#a6e22e">Credentials</span>.<span style="color:#a6e22e">SessionToken</span>,
     ),
 )
 
-roleSwapSession := session.New(roleSwapConfig)
+<span style="color:#a6e22e">roleSwapSession</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">roleSwapConfig</span>)
 
-// Now we have a session config that uses a session token generated
-// with our MFA code, we can use that repeatedly to assume a
-// role that requires MFA:
-roleArn := fmt.Sprintf(“arn:aws:iam::%v:role/%v”, account, adminrole)
-fmt.Println(“Assuming role on account”, account)
+<span style="color:#75715e">// Now we have a session config that uses a session token generated
+</span><span style="color:#75715e">// with our MFA code, we can use that repeatedly to assume a
+</span><span style="color:#75715e">// role that requires MFA:
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">roleArn</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#960050;background-color:#1e0010">“</span><span style="color:#a6e22e">arn</span>:<span style="color:#a6e22e">aws</span>:<span style="color:#a6e22e">iam</span>::<span style="color:#f92672">%</span><span style="color:#a6e22e">v</span>:<span style="color:#a6e22e">role</span><span style="color:#f92672">/%</span><span style="color:#a6e22e">v</span><span style="color:#960050;background-color:#1e0010">”</span>, <span style="color:#a6e22e">account</span>, <span style="color:#a6e22e">adminrole</span>)
+<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#960050;background-color:#1e0010">“</span><span style="color:#a6e22e">Assuming</span> <span style="color:#a6e22e">role</span> <span style="color:#a6e22e">on</span> <span style="color:#a6e22e">account</span><span style="color:#960050;background-color:#1e0010">”</span>, <span style="color:#a6e22e">account</span>)
 
-svc := sts.New(roleSwapSession)
-uniqueSessionName := fmt.Sprintf(“%d”, time.Now().UTC().UnixNano())
+<span style="color:#a6e22e">svc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sts</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">roleSwapSession</span>)
+<span style="color:#a6e22e">uniqueSessionName</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#960050;background-color:#1e0010">“</span><span style="color:#f92672">%</span><span style="color:#a6e22e">d</span><span style="color:#960050;background-color:#1e0010">”</span>, <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">UTC</span>().<span style="color:#a6e22e">UnixNano</span>())
 
-params := &amp;sts.AssumeRoleInput{
-    RoleArn: aws.String(roleArn),
-    RoleSessionName: aws.String(uniqueSessionName),
+<span style="color:#a6e22e">params</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">sts</span>.<span style="color:#a6e22e">AssumeRoleInput</span>{
+    <span style="color:#a6e22e">RoleArn</span>: <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">roleArn</span>),
+    <span style="color:#a6e22e">RoleSessionName</span>: <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">uniqueSessionName</span>),
 }
 
-assumeRoleResult, assumeRoleErr := svc.AssumeRole(params)
-if assumeRoleErr != nil {
-    fmt.Println(“Unable to assume role”, assumeRoleErr)
-    return
-}
-</code></pre>
+<span style="color:#a6e22e">assumeRoleResult</span>, <span style="color:#a6e22e">assumeRoleErr</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">svc</span>.<span style="color:#a6e22e">AssumeRole</span>(<span style="color:#a6e22e">params</span>)
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">assumeRoleErr</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#960050;background-color:#1e0010">“</span><span style="color:#a6e22e">Unable</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">assume</span> <span style="color:#a6e22e">role</span><span style="color:#960050;background-color:#1e0010">”</span>, <span style="color:#a6e22e">assumeRoleErr</span>)
+    <span style="color:#66d9ef">return</span>
+}</code></pre></div></p>
 
 <h2 id="uses">Uses</h2>
 
@@ -216,6 +214,29 @@ if assumeRoleErr != nil {
         
       </ul>
 
+      
+      <div class="disqus-comments">
+        <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "nexusblog-1" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
       
 
     </div>

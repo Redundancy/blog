@@ -40,7 +40,7 @@ It’s important that you create a session token in step one, as the MFA code is
 
 ### In Code
 I’ve chosen to illustrate this in Golang, but it should be relatively understandable and simple to translate to whatever language you like due to the similarities of the AWS libraries.
-```go
+{{< highlight go>}}
 stsSvc := sts.New(session.New())
 
 // assuming a virtual MFA device
@@ -86,7 +86,7 @@ if assumeRoleErr != nil {
     fmt.Println(“Unable to assume role”, assumeRoleErr)
     return
 }
-```
+{{< /highlight >}}
 ## Uses
 
 Using MFA means that the duration of access is limited — it’s not great for service accounts that are automatically scanning for things continuously and long-term (making a limited read-only shared role, disabling the MFA requirement and rotating keys regularly seems better), but it’s great for any command line tools, especially if they can use a non-MFA read-only role and then elevate themselves to another role that requires MFA for making changes.
