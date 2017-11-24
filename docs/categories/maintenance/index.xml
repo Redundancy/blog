@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Maintenance on The Nexus</title>
-    <link>http://the-nexus.co.uk/categories/maintenance/</link>
+    <link>https://redundancy.github.io/blog/categories/maintenance/</link>
     <description>Recent content in Maintenance on The Nexus</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 07 Jun 2016 14:46:39 +0000</lastBuildDate>
     
-	<atom:link href="http://the-nexus.co.uk/categories/maintenance/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://redundancy.github.io/blog/categories/maintenance/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Plan for Change</title>
-      <link>http://the-nexus.co.uk/post/planforchange/</link>
+      <link>https://redundancy.github.io/blog/post/planforchange/</link>
       <pubDate>Tue, 07 Jun 2016 14:46:39 +0000</pubDate>
       
-      <guid>http://the-nexus.co.uk/post/planforchange/</guid>
+      <guid>https://redundancy.github.io/blog/post/planforchange/</guid>
       <description>Change Software can change a lot over its lifetime because technology is moving faster, and I believe that software is living longer when operated as services. Change, driven by evolution and revolution in competitive technologies, huge changes in platforms, business models and shifts in customer expectations require us to be agile.
 I don’t mean that we have to adopt Scrum, but that we need to fundamentally consider software development with an agile viewpoint that accepts change as inevitable — you will be disrupted every 5 years or so, and you’d better be able to adapt.</description>
     </item>
     
     <item>
       <title>Standardized Python installs</title>
-      <link>http://the-nexus.co.uk/post/standardizedpython/</link>
+      <link>https://redundancy.github.io/blog/post/standardizedpython/</link>
       <pubDate>Sat, 23 Apr 2016 14:46:39 +0000</pubDate>
       
-      <guid>http://the-nexus.co.uk/post/standardizedpython/</guid>
+      <guid>https://redundancy.github.io/blog/post/standardizedpython/</guid>
       <description>Standardized Python installs Virtualenv for Python is wonderful, and you should use it.
 Our path to using it however, was rather rocky: working primarily on Windows, we were for quite some time victims of the Python community’s focus on Pip (and insistence on compiling everything during install).
 Working on Windows, with a large number of non-technical users, the idea of trying to get your tools to compile on an artists’ machine should really scare you (never-mind the lack of testing / support and particular versions of visual studio that had to exist).</description>
@@ -34,19 +34,19 @@ Working on Windows, with a large number of non-technical users, the idea of tryi
     
     <item>
       <title>File Static Data</title>
-      <link>http://the-nexus.co.uk/post/filestaticdata/</link>
+      <link>https://redundancy.github.io/blog/post/filestaticdata/</link>
       <pubDate>Sat, 02 Apr 2016 14:46:39 +0000</pubDate>
       
-      <guid>http://the-nexus.co.uk/post/filestaticdata/</guid>
+      <guid>https://redundancy.github.io/blog/post/filestaticdata/</guid>
       <description>Eve Online started out life early on with the “Database”. Because the DB existed already and was relatively convenient, we put data into it. Later, we realized that a lot of data was stuff that our game designers authored (like solar systems and their contents) that we called “static data”, and a clever system was created for versioning this data with revisions at a row level. It didn’t seem unreasonable at the time, and the waterfall mechanics of our release process matched pretty closely with the mechanisms in the database versioning system.</description>
     </item>
     
     <item>
       <title>AWS Shared Account Automation</title>
-      <link>http://the-nexus.co.uk/post/awssharedaccounts/</link>
+      <link>https://redundancy.github.io/blog/post/awssharedaccounts/</link>
       <pubDate>Sat, 06 Feb 2016 14:46:39 +0000</pubDate>
       
-      <guid>http://the-nexus.co.uk/post/awssharedaccounts/</guid>
+      <guid>https://redundancy.github.io/blog/post/awssharedaccounts/</guid>
       <description>The Multi-Account Organization There are a lot of properties of having multiple AWS accounts in an organization to recommend it as a practice: Separate invoices for different teams
 In some organizations cost allocation is a thing, and being able to get different invoices for different product groups is good. You can achieve some of this using Tags, but various services have some costs that aren’t easily separated. Security
 It can be difficult to avoid giving developers IAM access, since there are an ever increasing number of services and uses for it with assumed roles for EC2 and AWS Lambda.</description>

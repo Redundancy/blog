@@ -1,4 +1,4 @@
-baseurl = "http://the-nexus.co.uk"
+baseurl = "https://redundancy.github.io/blog/"
 languageCode = "en-us"
 title = "The Nexus"
 publishDir = "docs"

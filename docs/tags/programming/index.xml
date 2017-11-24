@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Programming on The Nexus</title>
-    <link>http://the-nexus.co.uk/tags/programming/</link>
+    <link>https://redundancy.github.io/blog/tags/programming/</link>
     <description>Recent content in Programming on The Nexus</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 23 Apr 2016 14:46:39 +0000</lastBuildDate>
     
-	<atom:link href="http://the-nexus.co.uk/tags/programming/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://redundancy.github.io/blog/tags/programming/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Standardized Python installs</title>
-      <link>http://the-nexus.co.uk/post/standardizedpython/</link>
+      <link>https://redundancy.github.io/blog/post/standardizedpython/</link>
       <pubDate>Sat, 23 Apr 2016 14:46:39 +0000</pubDate>
       
-      <guid>http://the-nexus.co.uk/post/standardizedpython/</guid>
+      <guid>https://redundancy.github.io/blog/post/standardizedpython/</guid>
       <description>Standardized Python installs Virtualenv for Python is wonderful, and you should use it.
 Our path to using it however, was rather rocky: working primarily on Windows, we were for quite some time victims of the Python community’s focus on Pip (and insistence on compiling everything during install).
 Working on Windows, with a large number of non-technical users, the idea of trying to get your tools to compile on an artists’ machine should really scare you (never-mind the lack of testing / support and particular versions of visual studio that had to exist).</description>

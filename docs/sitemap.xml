@@ -3,125 +3,125 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://the-nexus.co.uk/post/logseventsmetrics/</loc>
+    <loc>https://redundancy.github.io/blog/post/logseventsmetrics/</loc>
     <lastmod>2017-07-12T14:46:39+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://the-nexus.co.uk/post/planforchange/</loc>
+    <loc>https://redundancy.github.io/blog/post/planforchange/</loc>
     <lastmod>2016-06-07T14:46:39+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://the-nexus.co.uk/post/standardizedpython/</loc>
+    <loc>https://redundancy.github.io/blog/post/standardizedpython/</loc>
     <lastmod>2016-04-23T14:46:39+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://the-nexus.co.uk/post/filestaticdata/</loc>
+    <loc>https://redundancy.github.io/blog/post/filestaticdata/</loc>
     <lastmod>2016-04-02T14:46:39+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://the-nexus.co.uk/post/awssharedaccounts/</loc>
+    <loc>https://redundancy.github.io/blog/post/awssharedaccounts/</loc>
     <lastmod>2016-02-06T14:46:39+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://the-nexus.co.uk/post/whatissenior/</loc>
+    <loc>https://redundancy.github.io/blog/post/whatissenior/</loc>
   </url>
   
   <url>
-    <loc>http://the-nexus.co.uk/tags/aws/</loc>
+    <loc>https://redundancy.github.io/blog/tags/aws/</loc>
     <lastmod>2016-02-06T14:46:39+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://the-nexus.co.uk/categories/</loc>
+    <loc>https://redundancy.github.io/blog/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://the-nexus.co.uk/tags/data/</loc>
-    <lastmod>2016-04-02T14:46:39+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://the-nexus.co.uk/categories/engineering/</loc>
-    <lastmod>2017-07-12T14:46:39+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://the-nexus.co.uk/tags/fsd/</loc>
+    <loc>https://redundancy.github.io/blog/tags/data/</loc>
     <lastmod>2016-04-02T14:46:39+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://the-nexus.co.uk/tags/go/</loc>
-    <lastmod>2016-02-06T14:46:39+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://the-nexus.co.uk/tags/logging/</loc>
+    <loc>https://redundancy.github.io/blog/categories/engineering/</loc>
     <lastmod>2017-07-12T14:46:39+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://the-nexus.co.uk/tags/maintenance/</loc>
-    <lastmod>2016-06-07T14:46:39+00:00</lastmod>
+    <loc>https://redundancy.github.io/blog/tags/fsd/</loc>
+    <lastmod>2016-04-02T14:46:39+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://the-nexus.co.uk/categories/maintenance/</loc>
-    <lastmod>2016-06-07T14:46:39+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://the-nexus.co.uk/post/</loc>
-    <lastmod>2017-07-12T14:46:39+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://the-nexus.co.uk/tags/programming/</loc>
-    <lastmod>2016-04-23T14:46:39+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://the-nexus.co.uk/tags/python/</loc>
-    <lastmod>2016-04-23T14:46:39+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://the-nexus.co.uk/tags/services/</loc>
-    <lastmod>2016-06-07T14:46:39+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://the-nexus.co.uk/categories/services/</loc>
-    <lastmod>2016-06-07T14:46:39+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://the-nexus.co.uk/tags/</loc>
+    <loc>https://redundancy.github.io/blog/tags/go/</loc>
     <lastmod>2016-02-06T14:46:39+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://the-nexus.co.uk/</loc>
+    <loc>https://redundancy.github.io/blog/tags/logging/</loc>
+    <lastmod>2017-07-12T14:46:39+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://redundancy.github.io/blog/tags/maintenance/</loc>
+    <lastmod>2016-06-07T14:46:39+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://redundancy.github.io/blog/categories/maintenance/</loc>
+    <lastmod>2016-06-07T14:46:39+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://redundancy.github.io/blog/post/</loc>
+    <lastmod>2017-07-12T14:46:39+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://redundancy.github.io/blog/tags/programming/</loc>
+    <lastmod>2016-04-23T14:46:39+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://redundancy.github.io/blog/tags/python/</loc>
+    <lastmod>2016-04-23T14:46:39+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://redundancy.github.io/blog/tags/services/</loc>
+    <lastmod>2016-06-07T14:46:39+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://redundancy.github.io/blog/categories/services/</loc>
+    <lastmod>2016-06-07T14:46:39+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://redundancy.github.io/blog/tags/</loc>
+    <lastmod>2016-02-06T14:46:39+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://redundancy.github.io/blog/</loc>
     <lastmod>2017-07-12T14:46:39+00:00</lastmod>
     <priority>0</priority>
   </url>

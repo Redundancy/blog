@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go on The Nexus</title>
-    <link>http://the-nexus.co.uk/tags/go/</link>
+    <link>https://redundancy.github.io/blog/tags/go/</link>
     <description>Recent content in Go on The Nexus</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 06 Feb 2016 14:46:39 +0000</lastBuildDate>
     
-	<atom:link href="http://the-nexus.co.uk/tags/go/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://redundancy.github.io/blog/tags/go/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>AWS Shared Account Automation</title>
-      <link>http://the-nexus.co.uk/post/awssharedaccounts/</link>
+      <link>https://redundancy.github.io/blog/post/awssharedaccounts/</link>
       <pubDate>Sat, 06 Feb 2016 14:46:39 +0000</pubDate>
       
-      <guid>http://the-nexus.co.uk/post/awssharedaccounts/</guid>
+      <guid>https://redundancy.github.io/blog/post/awssharedaccounts/</guid>
       <description>The Multi-Account Organization There are a lot of properties of having multiple AWS accounts in an organization to recommend it as a practice: Separate invoices for different teams
 In some organizations cost allocation is a thing, and being able to get different invoices for different product groups is good. You can achieve some of this using Tags, but various services have some costs that aren’t easily separated. Security
 It can be difficult to avoid giving developers IAM access, since there are an ever increasing number of services and uses for it with assumed roles for EC2 and AWS Lambda.</description>
