@@ -1,0 +1,14 @@
+# Hugo binary (dropped in locally, not part of the source)
+hugo.exe
+hugo
+
+# Generated site output (built by Hugo / CI, not source)
+/public/
+/docs/
+
+# Hugo build lock and generated resource cache
+.hugo_build.lock
+/resources/_gen/
+
+# Hugo module cache (managed via go.mod / go.sum)
+/_vendor/
